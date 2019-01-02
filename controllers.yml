@@ -1,0 +1,8 @@
+---
+- hosts: controllers
+  become: true
+  tasks:
+     - name: Instalando ferramentas de administracao
+       apt: name={{item}} state=present update_cache=yes
+       with_items:
+          - curl

@@ -1,0 +1,8 @@
+---
+- hosts: databases
+  become: true
+  tasks:
+  - name: Instalando bases de dados
+    apt: name=mysql-server state=present update_cache=yes
+  - name: Garante que o mysql seja iniciado
+    service: name=mysql state=started enabled=yes

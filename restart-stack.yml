@@ -1,0 +1,31 @@
+---
+# Para os servicos nginx e apache
+- hosts: loadbalancers
+  become: true
+  tasks:
+     - service: name=nginx state=stopped
+
+- hosts: webservers
+  become: true
+  tasks:
+     - service: name=apache2 state=stopped
+
+# Reinicia mysql
+- hosts: databases
+  become: true
+  tasks:
+     - service: name=mysql state=restarted
+
+# Inicia os servicos
+- hosts: webservers
+  become: true
+  tasks:
+     - service: name=apache2 state=started
+
+- hosts: loadbalancers
+  become: true
+  tasks:
+     - service: name=nginx state=started
+
+
+#     fatal: [lb1]: FAILED! => {"changed": false, "msg": "value of state must be one of: reloaded, restarted, started, stopped, got: stoped"}

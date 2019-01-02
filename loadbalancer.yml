@@ -1,0 +1,8 @@
+---
+- hosts: loadbalancers
+  become: true
+  tasks:
+    - name: Instalando balanceador de carga
+      apt: name=nginx state=present update_cache=yes
+    - name: Garante que o nginx seja iniciando
+      service: name=nginx state=started enabled=yes

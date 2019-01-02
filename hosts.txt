@@ -1,0 +1,12 @@
+[loadbalancers]
+lb1
+
+[webservers]
+app1
+app2
+
+[databases]
+db1
+
+[controlers]
+control ansible_connection=local ansible_user=vagrant
