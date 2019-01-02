@@ -24,6 +24,10 @@
      - name: copia o VirtualHost para o servidor
        copy: src=templates/conf/virtualhost dest=/etc/apache2/sites-available/app.conf mode=0755
        notify: restart apache
+     
+     - name: baixa as dependencias da aplicacao python
+       pip: requirements=/var/www/app/requirements.txt virtualenv=/var/www/app/.venv
+       notify: restart apache
                     
   handlers:
      - name: restart apache
