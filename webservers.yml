@@ -16,6 +16,13 @@
      - name: Garante que mod_wsgi esta habilitado
        apache2_module: state=present  name=wsgi
        notify: restart apache
+
+     - name: copia a pasta app para o servidor
+       copy: src=templates/app/ dest=/var/www/demo mode=0755
+       notify: restart apache
+    
+     - name: copia o VirtualHost para o servidor
+       copy: src=templates/conf/virtualhost dest=/etc/apache2/sites-available/demo
                     
   handlers:
      - name: restart apache

@@ -1,0 +1,10 @@
+<VirtualHost *>
+	WSGIDaemonProcess demo threads=5
+
+	<Directory>
+		WSGIProcessGroup demo
+		WSGIApplicationGroup %{GLOBAL}
+		Order deny,alloy
+		Allow from all
+	</Directory>
+</VirtualHost>
