@@ -1,7 +1,8 @@
 <VirtualHost *>
 	WSGIDaemonProcess demo threads=5
+	WSGIScriptAlias /var/www/app/index.wsgi
 
-	<Directory>
+	<Directory /var/www/demo>
 		WSGIProcessGroup demo
 		WSGIApplicationGroup %{GLOBAL}
 		Order deny,alloy

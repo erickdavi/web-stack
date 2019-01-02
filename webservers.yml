@@ -18,11 +18,12 @@
        notify: restart apache
 
      - name: copia a pasta app para o servidor
-       copy: src=templates/app/ dest=/var/www/demo mode=0755
+       copy: src=templates/app/ dest=/var/www/app mode=0755
        notify: restart apache
     
      - name: copia o VirtualHost para o servidor
-       copy: src=templates/conf/virtualhost dest=/etc/apache2/sites-available/demo
+       copy: src=templates/conf/virtualhost dest=/etc/apache2/sites-available/app.conf mode=0755
+       notify: restart apache
                     
   handlers:
      - name: restart apache
