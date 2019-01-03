@@ -17,18 +17,35 @@
        apache2_module: state=present  name=wsgi
        notify: restart apache
 
-     - name: copia a pasta app para o servidor
+     - name: Copia a pasta app para o servidor
        copy: src=templates/app/ dest=/var/www/app mode=0755
        notify: restart apache
     
-     - name: copia o VirtualHost para o servidor
+     - name: Copia o VirtualHost para o servidor
        copy: src=templates/conf/virtualhost dest=/etc/apache2/sites-available/app.conf mode=0755
        notify: restart apache
      
-     - name: baixa as dependencias da aplicacao python
-       pip: requirements=/var/www/app/requirements.txt virtualenv=/var/www/app/.venv
+#     - name: Baixa as dependencias da aplicacao python
+#       pip: requirements=/var/www/app/requirements.txt virtualenv=/var/www/app/.venv
+#       notify: restart apache
+
+     - name: Baixa o modulo python Flask
+       pip:
+          name: flask
        notify: restart apache
-                    
+
+#     - name: Baixa o modulo python virtualenv
+#       pip:
+#          name: virtualenv
+#       notify: restart apache
+     
+     - name: Desativa o virtualhost padrao
+       file: path=/etc/apache2/sites-enabled/000-default.conf state=absent
+     
+     - name: Ativa o virtualhost do app
+       file: src=/etc/apache2/sites-available/app.conf dest=/etc/apache2/sites-enabled/app.conf state=link
+       notify: restart apache               
+  
   handlers:
      - name: restart apache
        service: name=apache2 state=restarted
