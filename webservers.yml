@@ -24,20 +24,11 @@
      - name: Copia o VirtualHost para o servidor
        copy: src=templates/conf/virtualhost dest=/etc/apache2/sites-available/app.conf mode=0755
        notify: restart apache
-     
-#     - name: Baixa as dependencias da aplicacao python
-#       pip: requirements=/var/www/app/requirements.txt virtualenv=/var/www/app/.venv
-#       notify: restart apache
 
      - name: Baixa o modulo python Flask
        pip:
           name: flask
        notify: restart apache
-
-#     - name: Baixa o modulo python virtualenv
-#       pip:
-#          name: virtualenv
-#       notify: restart apache
      
      - name: Desativa o virtualhost padrao
        file: path=/etc/apache2/sites-enabled/000-default.conf state=absent
