@@ -6,3 +6,19 @@
       apt: name=nginx state=present update_cache=yes
     - name: Garante que o nginx seja iniciando
       service: name=nginx state=started enabled=yes
+      
+    - name: Configura o nginx como loadbalancer
+      template: src=templates/nginx/nginx.jinja2 dest=/etc/nginx/sites-available/app mode=0644
+      notify: restart nginx
+
+    - name: Remove o site nginx padrao
+      file: path=/etc/nginx/sites-enabled/default state=absent 
+      notify: restart nginx
+
+    - name: ativa a configuracao de loadbalancer
+      file: src=/etc/nginx/sites-available/app dest=/etc/nginx/sites-enabled/app state=link
+      notify: restart nginx
+
+  handlers:
+     - name: restart nginx
+       service: name=nginx state=restarted
