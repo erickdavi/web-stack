@@ -2,7 +2,28 @@
 - hosts: databases
   become: true
   tasks:
+
+  - name: instala o pacote necessario para que o ansible controle o mysql
+    apt: name={{item}} state=present update_cache=yes
+    with_items:
+       - python-mysqldb
+       
   - name: Instalando bases de dados
     apt: name=mysql-server state=present update_cache=yes
+        
   - name: Garante que o mysql seja iniciado
     service: name=mysql state=started enabled=yes
+    
+  - name: Habilita o Mysql a receber conexoes de qualquer IP
+    lineinfile: dest=/etc/mysql/mysql.conf.d/mysqld.cnf regexp=^bind-address line="bind-address = 0.0.0.0"
+    notify: restart mysql
+       
+  - name: Cria a base de dados para a aplicacao
+    mysql_db: name=app state=present
+      
+  - name: cria o usuario da base de dados
+    mysql_user: name=app password=app priv=app.*:ALL host='%'
+  
+  handlers:
+  - name: restart mysql
+    service: name=mysql state=restarted
